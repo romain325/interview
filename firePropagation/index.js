@@ -36,7 +36,9 @@ async function main(){
 
     // Add a dead tree
     const rand_max = (max) => Math.floor(Math.random() * max);
-    forest[rand_max(config.height)][rand_max(config.width)] = state.FIRE;
+    for(let initial_fire = 0; initial_fire < config.initial; initial_fire++){
+        forest[rand_max(config.height)][rand_max(config.width)] = state.FIRE;
+    }
 
     // While any tree is on state.FIRE, burn the others
     while(forest.some(sub => sub.includes(state.FIRE))){
@@ -62,9 +64,9 @@ async function main(){
         fire.forEach(val => forest[val[0]][val[1]] = state.FIRE);
         
         // print forest state
-        console.log(forest);
+        utils.display(forest);
         // For vision purpose
-        await utils.sleep(500);
+        await utils.sleep(800);
         console.clear();
     }
     return forest;
@@ -73,7 +75,7 @@ async function main(){
 (async() => {
     const final = await main();
     let count = 0;
-    console.log(final);
+    utils.display(final);
     for (let i = 0; i < final.length; i++) {
         count += final[i].filter(val => val === state.DEAD).length;   
     }
